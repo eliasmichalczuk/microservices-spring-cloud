@@ -11,7 +11,7 @@ import br.com.alura.microservice.fornecedor.service.InfoService;
 @RestController
 @RequestMapping("/info")
 public class InfoController {
-	
+
 	@Autowired
 	private InfoService infoService;
 
