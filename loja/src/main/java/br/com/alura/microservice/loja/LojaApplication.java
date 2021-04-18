@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 public class LojaApplication {
 
 	@Bean
-	@LoadBalanced
+	@LoadBalanced // ribbon, client side load balance
 	public RestTemplate getRestTempĺate() {
 		return new RestTemplate();
 	}
