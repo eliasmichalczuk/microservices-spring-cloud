@@ -2,6 +2,7 @@ package br.com.alura.microservice.fornecedor.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,11 +18,13 @@ import br.com.alura.microservice.fornecedor.service.PedidoService;
 @RequestMapping("pedido")
 public class PedidoController {
 
+	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(InfoController.class);
 	@Autowired
 	private PedidoService pedidoService;
 
 	@RequestMapping(method = RequestMethod.POST)
 	public Pedido realizaPedido(@RequestBody List<ItemDoPedidoDTO> produtos) {
+		LOG.info("recebido pedido ");
 		return pedidoService.realizaPedido(produtos);
 	}
 
