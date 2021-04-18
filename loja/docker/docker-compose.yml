@@ -1,0 +1,20 @@
+version: '3'
+
+volumes:
+
+  loja-microservices: {}
+
+services:
+
+  spring-data-jpa-postgres:
+    image: sameersbn/postgresql:10-1
+    restart: always
+    environment:
+      DB_NAME: loja-microservices
+      DB_USER: dev
+      DB_PASS: dev
+      PG_PASSWORD: elias@123
+    ports:
+      - 5435:5435
+    volumes:
+      - loja-microservices:/var/lib/postgresql
