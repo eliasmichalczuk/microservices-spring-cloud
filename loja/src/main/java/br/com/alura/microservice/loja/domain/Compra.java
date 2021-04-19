@@ -1,9 +1,14 @@
 package br.com.alura.microservice.loja.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 import br.com.alura.microservice.loja.dto.InfoPedidoDto;
 
+@Entity
 public class Compra {
 
+	@Id
 	private Long pedidoId;
 	private Integer tempoDePreparo;
 	private String enderecoDestino;

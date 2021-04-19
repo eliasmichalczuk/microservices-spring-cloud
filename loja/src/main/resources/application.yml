@@ -3,13 +3,6 @@ server:
 spring:
   application:
     name: loja-service
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    password: elias@123
-    testWhileIdle: true
-    url: jdbc:postgresql://127.0.0.1:5435/loja-microservices
-    username: postgres
-    validationQuery: SELECT 1
   jpa:
     format-sql: true
     hibernate:
