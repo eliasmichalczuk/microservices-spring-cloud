@@ -13,16 +13,19 @@ public class Entrega {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private Long pedidoId;
-	
+
 	private LocalDate dataParaBusca;
-	
+
 	private LocalDate previsaoParaEntrega;
-	
+
 	private String enderecoOrigem;
-	
+
 	private String enderecoDestino;
+
+	public Entrega() {
+	}
 
 	public LocalDate getDataParaBusca() {
 		return dataParaBusca;
@@ -71,5 +74,5 @@ public class Entrega {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 }

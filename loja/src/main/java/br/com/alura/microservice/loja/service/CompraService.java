@@ -1,5 +1,7 @@
 package br.com.alura.microservice.loja.service;
 
+import java.time.LocalDate;
+
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,8 +9,11 @@ import org.springframework.stereotype.Service;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 import br.com.alura.microservice.loja.client.FornecedorClient;
+import br.com.alura.microservice.loja.client.TransportadorClient;
 import br.com.alura.microservice.loja.controller.dto.CompraDTO;
 import br.com.alura.microservice.loja.domain.Compra;
+import br.com.alura.microservice.loja.dto.InfoEntregaDto;
+import br.com.alura.microservice.loja.dto.VoucherDto;
 import br.com.alura.microservice.loja.repository.CompraRepository;
 
 @Service
@@ -18,6 +23,9 @@ public class CompraService {
 
 	@Autowired
 	private FornecedorClient fornecedorClient;
+
+	@Autowired
+	private TransportadorClient transportadorClient;
 
 	@Autowired
 	private CompraRepository compraRepository;
@@ -35,7 +43,16 @@ public class CompraService {
 		var pedido = fornecedorClient.realizaPedido(compra.getItens());
 		System.out.println(info.getEndereco());
 
+		var infoEntrega = new InfoEntregaDto(pedido.id,
+		                                     LocalDate.now().plusDays(pedido.tempoDePreparo),
+		                                     info.getEndereco(),
+		                                     compra.getEndereco().toString());
+		VoucherDto voucher = transportadorClient.reservaEntrega(infoEntrega);
+
 		var compraRealizada = new Compra(pedido, compra.getEndereco().toString());
+		compraRealizada.setDataEntrega(infoEntrega.getDataParaEntrega());
+		compraRealizada.setVoucherId(voucher.getNumero());
+
 		compraRepository.save(compraRealizada);
 
 		return compraRealizada;
