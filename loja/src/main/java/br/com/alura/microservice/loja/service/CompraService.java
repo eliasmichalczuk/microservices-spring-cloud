@@ -36,12 +36,22 @@ public class CompraService {
 	@HystrixCommand(fallbackMethod = "realizaCompraFallback", threadPoolKey = "realizaCompraThreadPool")
 	public Compra realizaCompra(CompraDTO compra) {
 
+		var compraRealizada = new Compra(compra.getEndereco().toString());
+		compraRepository.save(compraRealizada);
+
 		LOG.info("buscando informa coes do fornecedor de {}", compra.getEndereco().getEstado());
 		var info = fornecedorClient.getInfoPorEstado(compra.getEndereco().getEstado());
 
 		LOG.info("realizando pedido");
 		var pedido = fornecedorClient.realizaPedido(compra.getItens());
-		System.out.println(info.getEndereco());
+
+		compra.setCompraId(compraRealizada.getId());
+		compraRealizada.pedidoRealizado(pedido);
+		compraRepository.save(compraRealizada);
+
+//		if (true)
+//			throw new Error();
+		// ao dar erro, cai no metodo fallback descrito no hystrix command
 
 		var infoEntrega = new InfoEntregaDto(pedido.id,
 		                                     LocalDate.now().plusDays(pedido.tempoDePreparo),
@@ -49,16 +59,20 @@ public class CompraService {
 		                                     compra.getEndereco().toString());
 		VoucherDto voucher = transportadorClient.reservaEntrega(infoEntrega);
 
-		var compraRealizada = new Compra(pedido, compra.getEndereco().toString());
-		compraRealizada.setDataEntrega(infoEntrega.getDataParaEntrega());
-		compraRealizada.setVoucherId(voucher.getNumero());
-
+		compraRealizada.reservaRealizada(voucher);
 		compraRepository.save(compraRealizada);
 
 		return compraRealizada;
 	}
 
 	public Compra realizaCompraFallback(CompraDTO compra) throws Exception {
+
+		if (compra.getCompraId() != null) {
+			return compraRepository.findById(compra.getCompraId()).get();
+
+			// o cliente pode reprocessar ou cancelar a compra a partir do id
+		}
+
 		throw new Exception("Compra não pode ser realizada no momento.");
 	}
 
