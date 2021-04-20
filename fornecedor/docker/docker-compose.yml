@@ -10,7 +10,7 @@ services:
     image: sameersbn/postgresql:10-1
     restart: always
     environment:
-      DB_NAME: fornecedor-db, loja-db
+      DB_NAME: fornecedor-db, loja-db, transportador-db
       DB_USER: dev
       DB_PASS: dev
       PG_PASSWORD: dev
