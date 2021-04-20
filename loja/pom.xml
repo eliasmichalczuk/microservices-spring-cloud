@@ -38,7 +38,11 @@
 	    <version>1.4.7.RELEASE</version>
 	</dependency>
  
- 
+	<dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>9.4.1208</version>
+    </dependency>
 	 <dependency>
 	    <groupId>ch.qos.logback</groupId>
 	    <artifactId>logback-core</artifactId>

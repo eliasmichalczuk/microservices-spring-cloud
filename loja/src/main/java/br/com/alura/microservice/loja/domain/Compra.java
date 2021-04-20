@@ -19,6 +19,10 @@ public class Compra {
 		this.tempoDePreparo = tempoDePreparo;
 	}
 
+	public Compra() {
+		super();
+	}
+
 	public String getEnderecoDestino() {
 		return enderecoDestino;
 	}

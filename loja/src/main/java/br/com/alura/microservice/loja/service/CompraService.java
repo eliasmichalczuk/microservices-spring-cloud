@@ -25,7 +25,7 @@ public class CompraService {
 	// depois de pouco mais de 1s de aguardo dentro desse metodo, hystrix retorna
 	// erro
 	// a nao ser que o fallBackMethod seja utilizado
-	@HystrixCommand(fallbackMethod = "realizaCompraFallback")
+	@HystrixCommand(fallbackMethod = "realizaCompraFallback", threadPoolKey = "realizaCompraThreadPool")
 	public Compra realizaCompra(CompraDTO compra) {
 
 		LOG.info("buscando informa coes do fornecedor de {}", compra.getEndereco().getEstado());
@@ -38,13 +38,6 @@ public class CompraService {
 		var compraRealizada = new Compra(pedido, compra.getEndereco().toString());
 		compraRepository.save(compraRealizada);
 
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 		return compraRealizada;
 	}
 
@@ -52,7 +45,8 @@ public class CompraService {
 		throw new Exception("Compra não pode ser realizada no momento.");
 	}
 
-	@HystrixCommand
+	// bulk head, grupos diferentes de threads para requisicoes diferentes
+	@HystrixCommand(threadPoolKey = "getByIdThreadPool")
 	public Compra getById(Long id) {
 		return compraRepository.findById(id).get();
 	}

@@ -3,15 +3,15 @@ server:
 spring:
   application:
     name: loja-service
-  jpa:
-    format-sql: true
-    hibernate:
-      ddl-auto: update
-      naming-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQL95Dialect
-    show-sql: true
+#  jpa:
+#    format-sql: true
+#    hibernate:
+#      ddl-auto: update
+#      naming-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+#    show-sql: true
 
 eureka:
   client:
