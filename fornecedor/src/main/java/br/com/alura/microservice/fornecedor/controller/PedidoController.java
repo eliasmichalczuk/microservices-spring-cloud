@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,7 @@ public class PedidoController {
 	@RequestMapping(method = RequestMethod.POST)
 	public Pedido realizaPedido(@RequestBody List<ItemDoPedidoDTO> produtos) {
 		LOG.info("recebido pedido ");
+		var auth = SecurityContextHolder.getContext().getAuthentication();
 		return pedidoService.realizaPedido(produtos);
 	}
 
